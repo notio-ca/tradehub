@@ -1,0 +1,20 @@
+version: '2.2'
+services:
+  tradehub:
+    container_name: tradehub
+    hostname: tradehub
+    build: .
+    image: tradehub/app:1.0.0
+    ports:
+      - "8888:3031"
+    volumes:
+      - ../:/app
+      - ./docker-entrypoint.sh:/docker-entrypoint.sh
+    environment:
+      IS_DEV: "1"
+    restart: always
+#     networks:
+#       - hosting
+# networks:
+#   hosting:
+#     external: true
