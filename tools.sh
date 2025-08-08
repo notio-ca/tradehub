@@ -1,18 +1,20 @@
-echo "r) Restart Container"
-echo "w) Dev Web Server"
-echo "d) Database Migrations"
-echo "l)" Container logs
-echo "c)" Collect Static
-echo "exec) Enter Container"
-echo "build) Build Container"
 
-# echo "inspect) Inpect Database"
-read -p "--- Command > " Q
+if [ -n "$1" ]; then
+    Q="$1"
+else
+    echo "r) Restart Container"
+    echo "w) Dev Web Server"
+    echo "d) Database Migrations"
+    echo "l)" Container logs
+    echo "c)" Collect Static
+    echo "exec) Enter Container"
+    echo "cron) Run Cron"
+    echo "build) Build Container"
+
+    read -p "--- Command > " Q
+fi
 
 sudo chown -R ubuntu:ubuntu .
-
-# Nginx conf backup
-# cp -rap /websrv/data/nginx/conf.d /websrv/tradehub/stack/nginx/
 
 if [ "$Q" == "r" ]; then
     docker restart tradehub
@@ -35,13 +37,17 @@ if [ "$Q" == "l" ]; then
     docker logs -f tradehub --tail 1000
 fi
 
+if [ "$Q" == "exec" ]; then
+    docker exec -ti tradehub bash
+fi
+
 if [ "$Q" == "c" ]; then
     docker exec -ti tradehub python3 /app/manage.py collectstatic --clear
     sudo chown -R ubuntu:ubuntu ./static/
 fi
 
-if [ "$Q" == "exec" ]; then
-    docker exec -ti tradehub bash
+if [ "$Q" == "cron" ]; then
+    docker exec -ti tradehub python3 /app/manage.py cron
 fi
 
 if [ "$Q" == "build" ]; then

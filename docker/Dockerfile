@@ -20,6 +20,7 @@ RUN pip install --no-cache-dir django-unfold==0.47.0
 RUN pip install --no-cache-dir django-debug-toolbar==4.3.0
 RUN pip install --no-cache-dir python-decouple
 RUN pip install --no-cache-dir requests
+RUN pip install --no-cache-dir django-json-widget
 
 
 COPY ./docker-entrypoint.sh /

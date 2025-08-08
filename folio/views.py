@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def folio(request):
+    return render(request, "folio/folio.html", {"data": ""})
